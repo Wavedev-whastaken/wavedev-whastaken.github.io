@@ -3,20 +3,33 @@
 <blockquote>
 <p>I <strong>hate <code>.md</code> files a lot</strong>, BUT i still did it  </p>
 </blockquote>
-<p><a href="https://github.com/Wavedev-whastaken"><img src="https://img.shields.io/github/followers/Wavedev-whastaken?style=social" alt="GitHub followers"></a><br><a href="https://github.com/Wavedev-whastaken"><img src="https://img.shields.io/github/stars/Wavedev-whastaken?style=social" alt="GitHub stars"></a>  </p>
+<p>
+  <a href="https://github.com/Wavedev-whastaken">
+    <img src="https://img.shields.io/github/followers/Wavedev-whastaken?style=social" alt="GitHub followers">
+  </a><br>
+  <a href="https://github.com/Wavedev-whastaken">
+    <img src="https://img.shields.io/github/stars/Wavedev-whastaken?style=social" alt="GitHub stars">
+  </a>
+</p>
+
 <hr>
+
 <h2 id="about-me">About Me</h2>
 <ul>
-<li>Passionate about <strong>game development</strong> and <strong>C projects</strong>.    </li>
+<li>Passionate about <strong>game development</strong> and <strong>C projects</strong>.</li>
 <li>I <strong>really hate writing <code>.md</code></strong> But im smart sometimes </li>
 </ul>
+
 <hr>
+
 <h2 id="projects-i-m-proud-of">Projects I’m Proud Of</h2>
 <ul>
-<li><a href="https://github.com/Wavedev-whastaken/FPK">FPK</a> – Free Packing Tool for developers.  </li>
-<li><a href="https://github.com/Wavedev-whastaken/FPK-linux">FPK-linux</a> – Native Linux version of FPK.  </li>
+<li><a href="https://github.com/Wavedev-whastaken/FPK">FPK</a> – Free Packing Tool for developers.</li>
+<li><a href="https://github.com/Wavedev-whastaken/FPK-linux">FPK-linux</a> – Native Linux version of FPK.</li>
 </ul>
+
 <hr>
+
 <h2 id="skills-tools">Skills &amp; Tools</h2>
 <table>
 <thead>
@@ -29,23 +42,71 @@
 <tbody>
 <tr>
 <td>Godot</td>
-<td>C  · gd script</td>
+<td>C · gd script</td>
 <td>Git - not the best · VS Code · Blender</td>
 </tr>
 </tbody>
 </table>
+
 <hr>
+
 <h2 id="what-i-m-doing-now">What I’m Doing Now</h2>
 <ul>
-<li>Making games and tools using <strong>C</strong> and modern engines.  </li>
-<li>Optimizing code for speed and performance.  </li>
-<li>Contributing to open-source projects. </li>
+<li>Making games and tools using <strong>C</strong> and modern engines.</li>
+<li>Optimizing code for speed and performance.</li>
+<li>Contributing to open-source projects.</li>
 </ul>
+
 <hr>
+
 <h2 id="contact-me">Contact Me</h2>
 <ul>
-<li>Discord: <code>wavedev_101</code> (ID: <code>1295018506429141144</code>)  </li>
-<li>GitHub: <a href="https://github.com/Wavedev-whastaken">Wavedev-whastaken</a>  </li>
-<li>DEV.to: <a href="https://dev.to/wavedev">Wavedev</a>  </li>
-<li>YouTube: <a href="https://www.youtube.com/channel/UCWYb5qGL6jItohy0ywsMAiQ">@Wavedev</a>  </li>
+<li>Discord: <code>wavedev_101</code> (ID: <code>1295018506429141144</code>)</li>
+<li>GitHub: <a href="https://github.com/Wavedev-whastaken">Wavedev-whastaken</a></li>
+<li>DEV.to: <a href="https://dev.to/wavedev">Wavedev</a></li>
+<li>YouTube: <a href="https://www.youtube.com/channel/UCWYb5qGL6jItohy0ywsMAiQ">@Wavedev</a></li>
 </ul>
+
+<hr>
+
+<h2 id="api-demo">API Demo</h2>
+<div id="api-results">
+  <p><strong>Ping:</strong> <span id="ping">Loading...</span></p>
+  <p><strong>Uptime:</strong> <span id="uptime">Loading...</span></p>
+  <p><strong>UTC Time:</strong> <span id="time">Loading...</span></p>
+  <p><strong>Your IP:</strong> <span id="ip">Loading...</span></p>
+</div>
+
+<script>
+const API_BASE = 'https://wavedev-api.duckdns.org';
+
+// Helper to fetch JSON safely
+async function fetchJSON(path) {
+  try {
+    const res = await fetch(`${API_BASE}${path}`);
+    if (!res.ok) throw new Error(res.statusText);
+    return await res.json();
+  } catch (err) {
+    return { error: err.message };
+  }
+}
+
+// Update API results every 5 seconds
+async function updateAPI() {
+  const ping = await fetchJSON('/api/ping');
+  document.getElementById('ping').textContent = ping.ping || ping.error;
+
+  const uptime = await fetchJSON('/api/uptime');
+  document.getElementById('uptime').textContent = uptime.uptime || uptime.error || uptime.uptime_seconds + 's';
+
+  const time = await fetchJSON('/api/time');
+  document.getElementById('time').textContent = time.utc || time.error;
+
+  const ip = await fetchJSON('/api/ip');
+  document.getElementById('ip').textContent = ip.ip || ip.error;
+}
+
+// Initial fetch and periodic update
+updateAPI();
+setInterval(updateAPI, 5000);
+</script>
